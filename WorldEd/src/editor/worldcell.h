@@ -285,6 +285,7 @@ public:
 
     void setPos(const QPointF &pos) { mX = pos.x(), mY = pos.y(); }
     QPointF pos() const { return QPointF(mX, mY); }
+    QPointF absoluteWorldPosition() const;
     qreal x() const { return mX; }
     qreal y() const { return mY; }
 
