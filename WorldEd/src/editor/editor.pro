@@ -72,6 +72,7 @@ SOURCES += main.cpp\
     terrainimageeditordialog.cpp \
     worldgenpreviewdialog.cpp \
     tilesetcleanupdialog.cpp \
+    vehiclemeshpreview.cpp \
     BuildingEditor/buildingfurniturefile.cpp \
     BuildingEditor/buildingtilesfile.cpp \
     exportlotsprogressdialog.cpp \
@@ -137,6 +138,7 @@ SOURCES += main.cpp\
     basegraphicsscene.cpp \
     lotsdock.cpp \
     worldcellobject.cpp \
+    worldobjectvalidation.cpp \
     objectsdock.cpp \
     toolmanager.cpp \
     properties.cpp \
@@ -161,6 +163,7 @@ SOURCES += main.cpp\
     bmptotmxconfirmdialog.cpp \
     resizeworlddialog.cpp \
     newworlddialog.cpp \
+    otherworldsdialog.cpp \
     tilemetainfomgr.cpp \
     tilesetmanager.cpp \
     BuildingEditor/furnituregroups.cpp \
@@ -208,6 +211,7 @@ HEADERS  += mainwindow.h \
     terrainimageeditordialog.h \
     worldgenpreviewdialog.h \
     tilesetcleanupdialog.h \
+    vehiclemeshpreview.h \
     BuildingEditor/buildingfurniturefile.h \
     BuildingEditor/buildingtilesfile.h \
     exportlotsprogressdialog.h \
@@ -249,6 +253,7 @@ HEADERS  += mainwindow.h \
     world.h \
     worlddocument.h \
     worldcell.h \
+    worldobjectvalidation.h \
     cellview.h \
     cellscene.h \
     document.h \
@@ -296,6 +301,7 @@ HEADERS  += mainwindow.h \
     bmptotmxconfirmdialog.h \
     resizeworlddialog.h \
     newworlddialog.h \
+    otherworldsdialog.h \
     tilemetainfomgr.h \
     tilesetmanager.h \
     BuildingEditor/furnituregroups.h \
