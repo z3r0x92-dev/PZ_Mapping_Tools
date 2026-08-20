@@ -26,6 +26,7 @@
 #include "objectgroup.h"
 #include "world.h"
 #include "worldcell.h"
+#include "worldobjectvalidation.h"
 
 #include "BuildingEditor/roofhiding.h"
 
@@ -35,6 +36,7 @@
 #include <QFileInfo>
 #include <QMap>
 #include <QSet>
+#include <QtMath>
 
 using namespace Lua;
 
@@ -304,34 +306,39 @@ public:
                 WorldCell *cell = mWorld->cellAt(x, y);
                 foreach (WorldCellObject *obj, cell->objects()) {
                     if (obj->isSpawnPoint()) {
+                        QString reason;
+                        if (!WorldObjectValidation::validateSpawnPoint(
+                                    obj, &reason)) {
+                            mWarnings += QString::fromLatin1("%1: %2")
+                                    .arg(WorldObjectValidation::describe(obj))
+                                    .arg(reason);
+                            continue;
+                        }
                         PropertyList properties;
                         resolveProperties(obj, properties);
                         if (Property *p = properties.find(pd)) {
                             QStringList professions = p->mValue.split(QLatin1String(","), Qt::SkipEmptyParts);
-                            if (professions.contains(QLatin1String("all"))) {
-                                if (pd->mEnum)
-                                    professions = pd->mEnum->values();
-                                professions.removeAll(QLatin1String("all"));
+                            foreach (QString profession, professions) {
+                                profession = profession.trimmed();
+                                if (!profession.isEmpty()
+                                        && !spawnByProfession[profession].contains(obj)) {
+                                    spawnByProfession[profession] += obj;
+                                }
                             }
-                            foreach (QString profession, professions)
-                                spawnByProfession[profession] += obj;
                         }
                     }
                 }
             }
         }
 
-        QPoint origin = mWorld->getGenerateLotsSettings().worldOrigin;
-
         foreach (QString profession, spawnByProfession.keys()) {
             w.writeStartTable(profession.toUtf8());
             foreach (WorldCellObject *obj, spawnByProfession[profession]) {
                 w.writeStartTable();
                 w.setSuppressNewlines(true);
-                w.writeKeyAndValue("worldX", obj->cell()->x() + origin.x());
-                w.writeKeyAndValue("worldY", obj->cell()->y() + origin.y());
-                w.writeKeyAndValue("posX", obj->x());
-                w.writeKeyAndValue("posY", obj->y());
+                const QPointF absolute = obj->absoluteWorldPosition();
+                w.writeKeyAndValue("posX", int(qRound64(absolute.x())));
+                w.writeKeyAndValue("posY", int(qRound64(absolute.y())));
                 w.writeKeyAndValue("posZ", obj->level());
 
                 PropertyList properties;
@@ -369,17 +376,22 @@ public:
             for (int x = 0; x < mWorld->width(); x++) {
                 WorldCell *cell = mWorld->cellAt(x, y);
                 foreach (WorldCellObject *obj, cell->objects()) {
+                    QString reason;
+                    if (!WorldObjectValidation::validateExportObject(
+                                obj, &reason)) {
+                        mWarnings += QString::fromLatin1("%1: %2")
+                                .arg(WorldObjectValidation::describe(obj))
+                                .arg(reason);
+                        continue;
+                    }
                     w.writeStartTable();
                     w.setSuppressNewlines(true);
                     w.writeKeyAndValue("name", obj->name());
                     w.writeKeyAndValue("type", obj->type()->name());
                     if (obj->geometryType() == ObjectGeometryType::INVALID) {
-                        w.writeKeyAndValue(
-                                    "x", (obj->cell()->x() + origin.x())
-                                    * mWorld->cellSize() + obj->x());
-                        w.writeKeyAndValue(
-                                    "y", (obj->cell()->y() + origin.y())
-                                    * mWorld->cellSize() + obj->y());
+                        const QPointF absolute = obj->absoluteWorldPosition();
+                        w.writeKeyAndValue("x", absolute.x());
+                        w.writeKeyAndValue("y", absolute.y());
                         w.writeKeyAndValue("z", obj->level());
                         w.writeKeyAndValue("width", obj->width());
                         w.writeKeyAndValue("height", obj->height());
@@ -561,6 +573,7 @@ public:
     }
 
     QString mError;
+    QStringList mWarnings;
     World *mWorld;
     LuaTableWriter *w;
 };
@@ -600,6 +613,8 @@ void LuaWriter::writeWorld(World *world, QIODevice *device, const QString &absDi
 
 bool LuaWriter::writeSpawnPoints(World *world, const QString &filePath)
 {
+    d->mError.clear();
+    d->mWarnings.clear();
     QFile file(filePath);
     if (!d->openFile(&file))
         return false;
@@ -616,6 +631,8 @@ bool LuaWriter::writeSpawnPoints(World *world, const QString &filePath)
 
 bool LuaWriter::writeWorldObjects(World *world, const QString &filePath)
 {
+    d->mError.clear();
+    d->mWarnings.clear();
     QFile file(filePath);
     if (!d->openFile(&file))
         return false;
@@ -649,4 +666,9 @@ bool LuaWriter::writeRoomTones(World *world, const QString &filePath)
 QString LuaWriter::errorString() const
 {
     return d->mError;
+}
+
+QStringList LuaWriter::warnings() const
+{
+    return d->mWarnings;
 }
