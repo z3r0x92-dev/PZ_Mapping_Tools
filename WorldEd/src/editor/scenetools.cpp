@@ -373,6 +373,7 @@ void CreateObjectTool::startNewMapObject(const QPointF &pos)
         }
     }
 #endif
+    WorldObjectValidation::applyCreationDefaults(obj);
     mItem = new ObjectItem(obj, mScene);
     mItem->labelItem()->setShowSize(true);
     mItem->setZValue(10000);
@@ -397,6 +398,7 @@ void CreateObjectTool::cancelNewMapObject()
 void CreateObjectTool::finishNewMapObject()
 {
     WorldCellObject *obj = clearNewMapObjectItem();
+    WorldObjectValidation::applyCreationDefaults(obj);
     mScene->worldDocument()->addCellObject(mScene->cell(),
                                            mScene->cell()->objects().size(),
                                            obj);
@@ -1323,6 +1325,7 @@ void RoomToneTool::mousePressEvent(QGraphicsSceneMouseEvent *event)
         PropertyDef *pd = mScene->world()->propertyDefinition(property->mDefinition->mName);
         obj->addProperty(obj->properties().size(), new Property(pd, pd->mDefaultValue));
     }
+    WorldObjectValidation::applyCreationDefaults(obj);
     mScene->worldDocument()->addCellObject(mScene->cell(),
                                            mScene->cell()->objects().size(),
                                            obj);
@@ -1687,6 +1690,7 @@ void SpawnPointTool::mousePressEvent(QGraphicsSceneMouseEvent *event)
                                                mScene->document()->currentLevel(),
                                                1, 1);
     obj->addTemplate(obj->templates().size(), pt);
+    WorldObjectValidation::applyCreationDefaults(obj);
     mScene->worldDocument()->addCellObject(mScene->cell(),
                                            mScene->cell()->objects().size(),
                                            obj);
