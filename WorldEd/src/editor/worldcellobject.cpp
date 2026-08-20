@@ -60,6 +60,17 @@ WorldCellObject::WorldCellObject(WorldCell *cell, WorldCellObject *other)
     mType = ot ? ot : world->nullObjectType();
 }
 
+QPointF WorldCellObject::absoluteWorldPosition() const
+{
+    if (!mCell || !mCell->world())
+        return pos();
+    World *world = mCell->world();
+    const QPoint origin = world->getGenerateLotsSettings().worldOrigin;
+    return QPointF((mCell->x() + origin.x()) * world->cellSize() + mX,
+                   (mCell->y() + origin.y()) * world->cellSize() + mY);
+}
+
+
 int WorldCellObject::index()
 {
     return mCell->indexOf(this);
