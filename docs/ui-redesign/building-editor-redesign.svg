@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#29303a" stroke-width="1"/>
+      <path d="M12 0V24M0 12H24" fill="none" stroke="#202630" stroke-width="1"/>
+    </pattern>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#000" flood-opacity=".32"/>
+    </filter>
+    <style>
+      text { font-family: Inter, Segoe UI, Arial, sans-serif; fill: #e8edf4; }
+      .muted { fill: #9099a8; }
+      .small { font-size: 12px; }
+      .label { font-size: 13px; font-weight: 600; }
+      .tool { fill: #303640; stroke: #414957; stroke-width: 1; }
+      .tool-active { fill: #284e62; stroke: #52b4d8; stroke-width: 1.5; }
+      .panel { fill: #22272f; stroke: #363d48; stroke-width: 1; }
+      .line { stroke: #383f4b; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" rx="10" fill="#171a1f"/>
+
+  <!-- title and menu -->
+  <rect width="1600" height="34" rx="10" fill="#1e2229"/>
+  <rect y="26" width="1600" height="8" fill="#1e2229"/>
+  <rect x="14" y="10" width="15" height="15" rx="3" fill="#5cc8eb"/>
+  <rect x="20" y="15" width="15" height="15" rx="3" fill="none" stroke="#5cc8eb" stroke-width="2"/>
+  <text x="44" y="23" font-size="13" font-weight="600">CommunityCenter.tbx — Building Editor</text>
+  <circle cx="1522" cy="17" r="5" fill="#68717f"/>
+  <rect x="1544" y="12" width="10" height="10" fill="none" stroke="#9aa3b2"/>
+  <path d="M1575 12l10 10m0-10l-10 10" stroke="#9aa3b2" stroke-width="1.5"/>
+
+  <rect y="34" width="1600" height="42" fill="#252a32"/>
+  <text x="18" y="60" font-size="14">File</text>
+  <text x="56" y="60" font-size="14">Edit</text>
+  <text x="96" y="60" font-size="14">View</text>
+  <text x="142" y="60" font-size="14">Building</text>
+  <text x="210" y="60" font-size="14">Floor</text>
+  <text x="258" y="60" font-size="14">Help</text>
+
+  <!-- left mode rail -->
+  <rect x="0" y="76" width="78" height="794" fill="#20242b"/>
+  <g transform="translate(8 90)">
+    <rect width="62" height="66" rx="7" fill="#2e5567" stroke="#55c1e7"/>
+    <rect x="19" y="10" width="24" height="19" rx="2" fill="none" stroke="#72d2f3" stroke-width="2"/>
+    <path d="M23 25V14h15v11M26 14v11" stroke="#72d2f3"/>
+    <text x="31" y="49" text-anchor="middle" class="small" font-weight="600">Blueprint</text>
+  </g>
+  <g transform="translate(8 164)">
+    <rect width="62" height="66" rx="7" fill="#262b33"/>
+    <path d="M18 24l13-8 13 8-13 8zM18 24v10l13 8 13-8V24" fill="none" stroke="#9aa5b5" stroke-width="1.7"/>
+    <text x="31" y="52" text-anchor="middle" class="small">Isometric</text>
+  </g>
+  <g transform="translate(8 238)">
+    <rect width="62" height="66" rx="7" fill="#262b33"/>
+    <rect x="19" y="11" width="10" height="10" fill="#8dd36f"/><rect x="33" y="11" width="10" height="10" fill="#edb45d"/>
+    <rect x="19" y="25" width="10" height="10" fill="#5aa9dd"/><rect x="33" y="25" width="10" height="10" fill="#bd75d7"/>
+    <text x="31" y="52" text-anchor="middle" class="small">Tiles</text>
+  </g>
+  <g transform="translate(8 312)">
+    <rect width="62" height="66" rx="7" fill="#262b33"/>
+    <path d="M20 14h22M20 23h22M20 32h22" stroke="#9aa5b5" stroke-width="2"/>
+    <circle cx="27" cy="14" r="3" fill="#5cc8eb"/><circle cx="36" cy="23" r="3" fill="#5cc8eb"/><circle cx="30" cy="32" r="3" fill="#5cc8eb"/>
+    <text x="31" y="52" text-anchor="middle" class="small">Attributes</text>
+  </g>
+
+  <!-- main toolbar -->
+  <rect x="78" y="76" width="1150" height="84" fill="#1d2127"/>
+  <g transform="translate(92 88)">
+    <rect width="56" height="58" rx="6" class="tool-active"/>
+    <path d="M18 27h20V13H18zM23 13v14M32 13v14" fill="none" stroke="#7bd8f4" stroke-width="1.6"/>
+    <text x="28" y="47" text-anchor="middle" class="small">Room</text>
+  </g>
+  <g transform="translate(154 88)"><rect width="56" height="58" rx="6" class="tool"/><path d="M17 30l22-17v18" fill="none" stroke="#c4ccd7" stroke-width="2"/><text x="28" y="47" text-anchor="middle" class="small">Wall</text></g>
+  <g transform="translate(216 88)"><rect width="56" height="58" rx="6" class="tool"/><rect x="19" y="12" width="18" height="22" rx="1" fill="none" stroke="#c4ccd7" stroke-width="2"/><circle cx="33" cy="23" r="1.8" fill="#5cc8eb"/><text x="28" y="47" text-anchor="middle" class="small">Door</text></g>
+  <g transform="translate(278 88)"><rect width="56" height="58" rx="6" class="tool"/><rect x="17" y="13" width="22" height="19" fill="none" stroke="#c4ccd7" stroke-width="2"/><path d="M28 13v19M17 22.5h22" stroke="#c4ccd7"/><text x="28" y="47" text-anchor="middle" class="small">Window</text></g>
+  <g transform="translate(340 88)"><rect width="56" height="58" rx="6" class="tool"/><path d="M17 31h7v-6h7v-6h8" fill="none" stroke="#c4ccd7" stroke-width="2"/><text x="28" y="47" text-anchor="middle" class="small">Stairs</text></g>
+  <g transform="translate(402 88)"><rect width="66" height="58" rx="6" class="tool"/><path d="M16 27l17-14 17 14" fill="none" stroke="#c4ccd7" stroke-width="2"/><path d="M54 17l5 5 5-5" fill="none" stroke="#8e98a8"/><text x="29" y="47" text-anchor="middle" class="small">Roof</text></g>
+  <g transform="translate(474 88)"><rect width="72" height="58" rx="6" class="tool"/><path d="M22 13h28v23H22zM18 18h8v18" fill="none" stroke="#c4ccd7" stroke-width="1.8"/><text x="36" y="50" text-anchor="middle" class="small">Furniture</text></g>
+  <line x1="562" y1="91" x2="562" y2="145" class="line"/>
+
+  <g transform="translate(578 91)">
+    <text x="0" y="12" class="small muted">CURRENT ROOM</text>
+    <rect x="0" y="19" width="174" height="38" rx="5" fill="#2b3038" stroke="#444c58"/>
+    <circle cx="17" cy="38" r="7" fill="#cb5964"/>
+    <text x="32" y="43" font-size="13">Great Hall</text>
+    <path d="M154 34l5 6 5-6" fill="none" stroke="#aab3c1"/>
+  </g>
+  <g transform="translate(768 91)">
+    <text x="0" y="12" class="small muted">LEVEL</text>
+    <rect x="0" y="19" width="150" height="38" rx="5" fill="#2b3038" stroke="#444c58"/>
+    <text x="75" y="43" text-anchor="middle" font-size="13" font-weight="600">Floor 1 of 3</text>
+    <path d="M12 42l6-7 6 7M126 35l6 7 6-7" fill="none" stroke="#99a4b4"/>
+  </g>
+  <g transform="translate(938 107)">
+    <rect width="112" height="40" rx="5" class="tool"/>
+    <path d="M15 12h8v3h-5v5h-3zM31 12h-8v3h5v5h3zM15 28h8v-3h-5v-5h-3zM31 28h-8v-3h5v-5h3z" fill="#aeb8c6"/>
+    <text x="68" y="25" text-anchor="middle" class="label">Fit Building</text>
+  </g>
+  <g transform="translate(1058 107)"><rect width="96" height="40" rx="5" class="tool"/><circle cx="21" cy="20" r="8" fill="none" stroke="#b7c0cc"/><path d="M27 26l7 7" stroke="#b7c0cc" stroke-width="2"/><text x="65" y="25" text-anchor="middle" class="label">100%</text></g>
+
+  <!-- canvas -->
+  <rect x="78" y="160" width="1150" height="710" fill="#101318"/>
+  <rect x="78" y="160" width="1150" height="710" fill="url(#grid)"/>
+  <g transform="translate(164 245)">
+    <rect width="972" height="430" rx="4" fill="#e3e7ec" stroke="#6e7885" stroke-width="4"/>
+    <rect x="20" y="20" width="230" height="150" fill="#6c9c73" stroke="#eef2f5" stroke-width="4"/>
+    <text x="135" y="92" text-anchor="middle" font-size="18" font-weight="700">GYM</text>
+    <text x="135" y="115" text-anchor="middle" class="small">Workout Area</text>
+    <rect x="20" y="174" width="230" height="110" fill="#b76b9a" stroke="#eef2f5" stroke-width="4"/>
+    <text x="135" y="224" text-anchor="middle" font-size="18" font-weight="700">KITCHEN</text>
+    <text x="135" y="247" text-anchor="middle" class="small">Dining + Service</text>
+    <rect x="254" y="20" width="432" height="264" fill="#bd5965" stroke="#eef2f5" stroke-width="4"/>
+    <text x="470" y="130" text-anchor="middle" font-size="24" font-weight="700">GREAT HALL</text>
+    <text x="470" y="157" text-anchor="middle" font-size="14">Stage • Lounge • Community Events</text>
+    <rect x="398" y="36" width="144" height="48" rx="2" fill="#4a5360" stroke="#c9d0d8"/>
+    <text x="470" y="65" text-anchor="middle" class="small">STAGE</text>
+    <rect x="690" y="20" width="262" height="150" fill="#5267a7" stroke="#eef2f5" stroke-width="4"/>
+    <text x="821" y="92" text-anchor="middle" font-size="18" font-weight="700">ARMORY</text>
+    <text x="821" y="115" text-anchor="middle" class="small">Secure Storage</text>
+    <rect x="690" y="174" width="126" height="110" fill="#4d91b2" stroke="#eef2f5" stroke-width="4"/>
+    <text x="753" y="224" text-anchor="middle" font-size="14" font-weight="700">RESTROOM</text>
+    <rect x="820" y="174" width="132" height="110" fill="#4d91b2" stroke="#eef2f5" stroke-width="4"/>
+    <text x="886" y="224" text-anchor="middle" font-size="14" font-weight="700">LOCKERS</text>
+    <rect x="20" y="288" width="932" height="70" fill="#f1f3f5" stroke="#c4cad2" stroke-width="3"/>
+    <text x="486" y="329" text-anchor="middle" font-size="16" font-weight="700" fill="#596270">FOYER / COVERED WALKWAY</text>
+    <rect x="20" y="362" width="932" height="48" fill="#626a73"/>
+    <text x="486" y="393" text-anchor="middle" class="label">DRIVE-UP PARKING</text>
+  </g>
+
+  <!-- asset browser -->
+  <rect x="1228" y="76" width="372" height="794" class="panel"/>
+  <text x="1250" y="108" font-size="15" font-weight="700">Asset Browser</text>
+  <path d="M1570 98l10 10m0-10l-10 10" stroke="#7e8897"/>
+  <rect x="1246" y="124" width="336" height="38" rx="6" fill="#181c22" stroke="#424a56"/>
+  <circle cx="1265" cy="143" r="7" fill="none" stroke="#8e99a8" stroke-width="1.6"/>
+  <path d="M1270 148l6 6" stroke="#8e99a8" stroke-width="1.6"/>
+  <text x="1284" y="148" font-size="13" class="muted">Search tiles and furniture…</text>
+  <g transform="translate(1246 176)">
+    <rect width="104" height="36" rx="5" fill="#2d5668"/>
+    <text x="52" y="23" text-anchor="middle" class="label">Tiles</text>
+    <text x="151" y="23" text-anchor="middle" class="label muted">Furniture</text>
+    <text x="277" y="23" text-anchor="middle" class="label muted">★ Favorites</text>
+  </g>
+  <line x1="1246" y1="221" x2="1582" y2="221" class="line"/>
+  <text x="1248" y="248" class="small muted" font-weight="700">QUICK ACCESS</text>
+  <g font-size="13">
+    <rect x="1244" y="261" width="340" height="34" rx="5" fill="#29323b"/>
+    <circle cx="1263" cy="278" r="6" fill="#5cc8eb"/><text x="1279" y="283">Used Tiles</text><text x="1564" y="283" text-anchor="end" class="muted">28</text>
+    <circle cx="1263" cy="312" r="6" fill="#ad76d5"/><text x="1279" y="317">Used Furniture</text><text x="1564" y="317" text-anchor="end" class="muted">12</text>
+  </g>
+  <text x="1248" y="355" class="small muted" font-weight="700">BUILDING</text>
+  <g font-size="13">
+    <rect x="1244" y="367" width="340" height="36" rx="5" fill="#31546a"/>
+    <path d="M1257 386h14v-12h-14z" fill="none" stroke="#69c7e8"/><text x="1281" y="390">Exterior Walls</text><text x="1564" y="390" text-anchor="end" class="muted">184</text>
+    <text x="1281" y="427">Interior Walls</text><text x="1564" y="427" text-anchor="end" class="muted">166</text>
+    <text x="1281" y="464">Floors</text><text x="1564" y="464" text-anchor="end" class="muted">92</text>
+    <text x="1281" y="501">Doors &amp; Frames</text><text x="1564" y="501" text-anchor="end" class="muted">74</text>
+    <text x="1281" y="538">Windows &amp; Curtains</text><text x="1564" y="538" text-anchor="end" class="muted">108</text>
+    <text x="1281" y="575">Stairs</text><text x="1564" y="575" text-anchor="end" class="muted">32</text>
+    <text x="1281" y="612">Roofs</text><text x="1564" y="612" text-anchor="end" class="muted">86</text>
+  </g>
+  <line x1="1246" y1="635" x2="1582" y2="635" class="line"/>
+  <text x="1248" y="662" class="small muted" font-weight="700">PREVIEW</text>
+  <rect x="1246" y="676" width="336" height="126" rx="6" fill="#171b20" stroke="#3c444f"/>
+  <g transform="translate(1284 696)">
+    <path d="M0 44l47-28 48 28-48 29z" fill="#646d78" stroke="#aab4c2"/>
+    <path d="M0 44v24l47 28V73zM95 44v24L47 96V73z" fill="#4f5761" stroke="#8d97a5"/>
+  </g>
+  <text x="1402" y="713" class="label">Exterior Wall</text>
+  <text x="1402" y="735" class="small muted">walls_exterior_house_01</text>
+  <rect x="1402" y="755" width="72" height="28" rx="4" fill="#2b3038" stroke="#444c58"/><text x="1438" y="774" text-anchor="middle" class="small">Favorite ☆</text>
+  <text x="1248" y="833" class="small muted">Preview size</text>
+  <rect x="1452" y="814" width="130" height="32" rx="5" fill="#2b3038" stroke="#444c58"/>
+  <text x="1517" y="835" text-anchor="middle" class="small">150%</text>
+
+  <!-- status bar -->
+  <rect y="870" width="1600" height="30" fill="#20242a"/>
+  <circle cx="18" cy="885" r="4" fill="#57c985"/>
+  <text x="30" y="890" class="small">Draw Room · Drag to create · Ctrl+click to erase</text>
+  <text x="1065" y="890" class="small muted">Tile 34, 71</text>
+  <text x="1170" y="890" class="small muted">Grid  ON</text>
+  <text x="1270" y="890" class="small muted">Zoom  50%</text>
+  <text x="1500" y="890" class="small" fill="#79d998">Saved</text>
+</svg>

@@ -1,0 +1,231 @@
+/* BuildingEd-only studio workspace. The global selectable theme remains in
+   place; these selectors give the editor shell the hierarchy in the design. */
+QMainWindow#BuildingEditorWindow,
+QWidget#FancyTabWidget,
+QMainWindow[objectName="ObjectEditMode.Widget"],
+QMainWindow[objectName="TileEditMode.Widget"],
+QMainWindow[objectName="AttributeEditMode.Widget"] {
+    background: #1B2027;
+    color: #D7DCE5;
+    font-family: "Segoe UI";
+    font-size: 10pt;
+}
+
+QMainWindow#BuildingEditorWindow > QMenuBar {
+    background: #20252D;
+    color: #D7DCE5;
+    border-bottom: 1px solid #303640;
+    padding: 3px 7px;
+}
+QMainWindow#BuildingEditorWindow > QMenuBar::item {
+    background: transparent;
+    padding: 5px 9px;
+    border-radius: 4px;
+}
+QMainWindow#BuildingEditorWindow > QMenuBar::item:selected {
+    background: #303842;
+    color: #FFFFFF;
+}
+
+QToolBar#ObjectEditModeToolBar {
+    background: #1D2229;
+    border: none;
+    border-bottom: 1px solid #303640;
+    spacing: 5px;
+    padding: 10px 12px;
+}
+QToolBar#ObjectEditModeToolBar::separator {
+    background: #3A414B;
+    width: 1px;
+    margin: 7px 7px;
+}
+QToolBar#ObjectEditModeToolBar QToolButton[studioTool="true"] {
+    min-width: 52px;
+    min-height: 48px;
+    padding: 6px 5px;
+    color: #D7DCE5;
+    background: #2A313C;
+    border: 1px solid #38414E;
+    border-radius: 7px;
+}
+QToolBar#ObjectEditModeToolBar QToolButton[studioTool="true"]:hover {
+    background: #333C48;
+    border-color: #596675;
+}
+QToolBar#ObjectEditModeToolBar QToolButton[studioTool="true"]:checked {
+    background: #174A5D;
+    border: 1px solid #57C8E8;
+    color: #FFFFFF;
+}
+QToolBar#ObjectEditModeToolBar QToolButton[studioAction="true"] {
+    min-height: 34px;
+    padding: 5px 10px;
+    color: #D7DCE5;
+    background: #2A313C;
+    border: 1px solid #38414E;
+    border-radius: 6px;
+}
+QToolBar#ObjectEditModeToolBar QToolButton[studioAction="true"]:hover {
+    background: #35404C;
+    border-color: #5A6878;
+}
+
+QWidget#StudioContextField {
+    background: transparent;
+}
+QLabel[studioContextLabel="true"],
+QLabel#AssetSectionLabel,
+QLabel#AssetPreviewSectionLabel {
+    color: #8993A3;
+    font-size: 8pt;
+    font-weight: 600;
+}
+QComboBox#StudioRoomCombo,
+QToolButton#StudioFloorButton,
+QToolButton#StudioFloorLabel {
+    min-height: 32px;
+    padding: 2px 9px;
+    color: #E2E6ED;
+    background: #252C35;
+    border: 1px solid #3A4350;
+    border-radius: 6px;
+}
+QComboBox#StudioRoomCombo:hover,
+QToolButton#StudioFloorButton:hover {
+    border-color: #57C8E8;
+}
+
+QDockWidget#CategoryDock {
+    color: #E1E5EC;
+    titlebar-close-icon: url(:/images/16x16/window-close.png);
+    background: #222831;
+}
+QDockWidget#CategoryDock::title {
+    background: #222831;
+    border-bottom: 1px solid #343C47;
+    padding: 11px 12px;
+    text-align: left;
+    font-weight: 600;
+}
+QWidget[objectName="CategoryDock.contents"] {
+    background: #222831;
+}
+QLineEdit[objectName="CategoryDock.filterEdit"] {
+    min-height: 34px;
+    color: #DDE2EA;
+    selection-background-color: #276A83;
+    background: #171C22;
+    border: 1px solid #3A4350;
+    border-radius: 7px;
+    padding: 2px 10px;
+}
+QLineEdit[objectName="CategoryDock.filterEdit"]:focus {
+    border-color: #57C8E8;
+}
+QTabBar#AssetKindTabs::tab {
+    min-height: 30px;
+    padding: 3px 12px;
+    margin-right: 3px;
+    color: #939DAD;
+    background: transparent;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+}
+QTabBar#AssetKindTabs::tab:selected {
+    color: #EAF8FC;
+    background: #2D5D70;
+}
+QTabBar#AssetKindTabs::tab:hover:!selected {
+    color: #D9DEE6;
+    background: #2B323C;
+}
+QListWidget[objectName="CategoryDock.categoryList"] {
+    color: #CED4DE;
+    background: #222831;
+    border: none;
+    outline: none;
+    padding: 2px 0;
+}
+QListWidget[objectName="CategoryDock.categoryList"]::item {
+    min-height: 27px;
+    padding: 3px 9px;
+    margin: 1px 0;
+    border-radius: 5px;
+}
+QListWidget[objectName="CategoryDock.categoryList"]::item:hover {
+    background: #2A323D;
+}
+QListWidget[objectName="CategoryDock.categoryList"]::item:selected {
+    color: #EAF8FC;
+    background: #315F73;
+}
+QSplitter[objectName="CategoryDock.splitter"]::handle {
+    height: 1px;
+    background: #363E49;
+}
+QTableView[objectName="CategoryDock.tilesetView"],
+QTableView[objectName="CategoryDock.furnitureView"] {
+    color: #D7DCE5;
+    background: #171C22;
+    alternate-background-color: #171C22;
+    border: 1px solid #343D49;
+    border-radius: 6px;
+    gridline-color: #303844;
+    selection-background-color: #315F73;
+}
+QFrame#AssetPreviewCard {
+    background: #171C22;
+    border: 1px solid #38414D;
+    border-radius: 7px;
+}
+QLabel#AssetPreviewImage {
+    background: #242B34;
+    border: 1px solid #3A4350;
+    border-radius: 5px;
+}
+QLabel#AssetPreviewTitle {
+    color: #EEF1F5;
+    font-weight: 600;
+}
+QLabel#AssetPreviewDetail {
+    color: #8E98A8;
+    font-size: 8pt;
+}
+QComboBox[objectName="CategoryDock.scaleComboBox"] {
+    min-height: 28px;
+    background: #29313B;
+    border: 1px solid #3B4552;
+    border-radius: 5px;
+    padding: 1px 8px;
+}
+
+QTabWidget[objectName="ObjectEditMode.TabWidget"]::pane,
+QTabWidget[objectName="TileEditMode.TabWidget"]::pane,
+QTabWidget[objectName="AttributeEditMode.TabWidget"]::pane {
+    border: none;
+    background: #151A20;
+}
+QTabBar::tab {
+    color: #AEB6C2;
+    background: #242A33;
+    border: none;
+    border-right: 1px solid #343B46;
+    padding: 7px 12px;
+}
+QTabBar::tab:selected {
+    color: #FFFFFF;
+    background: #303844;
+}
+
+QLabel[studioStatus="true"] {
+    color: #9EA8B7;
+    padding: 3px 7px;
+}
+QComboBox[studioStatus="true"] {
+    min-height: 24px;
+    background: #262D36;
+    border: 1px solid #3B4450;
+    border-radius: 4px;
+    padding: 0 7px;
+}
