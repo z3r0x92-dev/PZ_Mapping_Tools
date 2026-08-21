@@ -41,4 +41,3 @@ packaging layout.
 - Confirm existing themes can still be selected in Preferences.
 - Confirm floor switching, room selection, furniture placement, and roof menus
   behave as before.
-
