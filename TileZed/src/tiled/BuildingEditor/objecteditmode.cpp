@@ -39,6 +39,8 @@
 #include <QAbstractItemView>
 #include <QComboBox>
 #include <QDir>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QMainWindow>
 #include <QStackedWidget>
 #include <QTabWidget>
@@ -61,35 +63,69 @@ ObjectEditModeToolBar::ObjectEditModeToolBar(ObjectEditMode *mode, QWidget *pare
 
     setObjectName(QString::fromUtf8("ObjectEditModeToolBar"));
     setWindowTitle(tr("Object ToolBar"));
+    setIconSize(QSize(24, 24));
+    setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    setMovable(false);
+    setFloatable(false);
 
     Ui::BuildingEditorWindow *actions = BuildingEditorWindow::instance()->actionIface();
 
-    addAction(actions->actionPencil);
-    addAction(actions->actionWall);
-    addAction(actions->actionSelectRooms);
-    addSeparator();
-    addAction(actions->actionDoor);
-    addAction(actions->actionWindow);
-    addAction(actions->actionStairs);
-    addAction(actions->actionRoof);
-    addAction(actions->actionRoofShallow);
-    addAction(actions->actionRoof30Degree);
-    addAction(actions->actionRoofCorner);
-    addAction(actions->actionRoofCorner30Degree);
-    addAction(actions->actionFurniture);
-    addAction(actions->actionSelectObject);
-    addAction(actions->actionBasementAccessTool);
-    addAction(actions->actionRooms);
-    addAction(actions->actionUpLevel);
-    addAction(actions->actionDownLevel);
+    actions->actionPencil->setText(tr("Room"));
+    actions->actionSelectRooms->setText(tr("Select"));
+    actions->actionRoof->setText(tr("Roof"));
+    actions->actionRoofShallow->setText(tr("Shallow"));
+    actions->actionRoof30Degree->setText(tr("30° Roof"));
+    actions->actionRoofCorner->setText(tr("Corner"));
+    actions->actionRoofCorner30Degree->setText(tr("30° Corner"));
+    actions->actionSelectObject->setText(tr("Objects"));
+    actions->actionBasementAccessTool->setText(tr("Basement"));
+    actions->actionUpLevel->setText(tr("Floor Up"));
+    actions->actionDownLevel->setText(tr("Floor Down"));
+
+    const QList<QAction *> primaryActions = {
+        actions->actionPencil, actions->actionWall, actions->actionDoor,
+        actions->actionWindow, actions->actionStairs, actions->actionRoof,
+        actions->actionFurniture
+    };
+    for (QAction *action : primaryActions) {
+        addAction(action);
+        if (QWidget *button = widgetForAction(action))
+            button->setProperty("studioTool", true);
+    }
+
+    // Keep the advanced tools alive for their existing menus and shortcuts,
+    // but move them out of the primary toolbar into a compact More menu below.
+    const QList<QAction *> advancedActions = {
+        actions->actionRoofShallow, actions->actionRoof30Degree,
+        actions->actionRoofCorner, actions->actionRoofCorner30Degree
+    };
+    for (QAction *action : advancedActions) {
+        addAction(action);
+        if (QWidget *button = widgetForAction(action))
+            button->hide();
+    }
     addSeparator();
 
     mRoomComboBox = new QComboBox;
     mRoomComboBox->setIconSize(QSize(20, 20));
-//    mRoomComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    mRoomComboBox->setMinimumWidth(170);
+    mRoomComboBox->setMaximumWidth(240);
+    mRoomComboBox->setMinimumContentsLength(14);
+    mRoomComboBox->setSizeAdjustPolicy(
+                QComboBox::AdjustToMinimumContentsLengthWithIcon);
+    mRoomComboBox->setToolTip(tr("Current room"));
 
-    addWidget(mRoomComboBox);
-    addAction(actions->actionRooms);
+    QWidget *roomField = new QWidget(this);
+    roomField->setObjectName(QLatin1String("StudioContextField"));
+    QVBoxLayout *roomLayout = new QVBoxLayout(roomField);
+    roomLayout->setContentsMargins(0, 0, 0, 0);
+    roomLayout->setSpacing(2);
+    QLabel *roomCaption = new QLabel(tr("CURRENT ROOM"), roomField);
+    roomCaption->setProperty("studioContextLabel", true);
+    mRoomComboBox->setObjectName(QLatin1String("StudioRoomCombo"));
+    roomLayout->addWidget(roomCaption);
+    roomLayout->addWidget(mRoomComboBox);
+    addWidget(roomField);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     connect(mRoomComboBox, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &ObjectEditModeToolBar::roomIndexChanged);
@@ -99,17 +135,47 @@ ObjectEditModeToolBar::ObjectEditModeToolBar(ObjectEditMode *mode, QWidget *pare
 #endif
 
     mFloorLabel = new QToolButton;
-    mFloorLabel->setMinimumWidth(90);
+    mFloorLabel->setObjectName(QLatin1String("StudioFloorLabel"));
+    mFloorLabel->setMinimumWidth(52);
     mFloorLabel->setAutoRaise(true);
     mFloorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     mFloorLabel->setToolTip(tr("Click to edit floors"));
     connect(mFloorLabel, &QAbstractButton::clicked,
             BuildingEditorWindow::instance(), &BuildingEditorWindow::floorsDialog);
 
+    QWidget *floorField = new QWidget(this);
+    floorField->setObjectName(QLatin1String("StudioContextField"));
+    QVBoxLayout *floorLayout = new QVBoxLayout(floorField);
+    floorLayout->setContentsMargins(0, 0, 0, 0);
+    floorLayout->setSpacing(2);
+    QLabel *floorCaption = new QLabel(tr("LEVEL"), floorField);
+    floorCaption->setProperty("studioContextLabel", true);
+    QWidget *floorControls = new QWidget(floorField);
+    QHBoxLayout *floorControlsLayout = new QHBoxLayout(floorControls);
+    floorControlsLayout->setContentsMargins(0, 0, 0, 0);
+    floorControlsLayout->setSpacing(3);
+    QToolButton *floorDownButton = new QToolButton(floorControls);
+    floorDownButton->setObjectName(QLatin1String("StudioFloorButton"));
+    floorDownButton->setDefaultAction(actions->actionDownLevel);
+    QToolButton *floorUpButton = new QToolButton(floorControls);
+    floorUpButton->setObjectName(QLatin1String("StudioFloorButton"));
+    floorUpButton->setDefaultAction(actions->actionUpLevel);
+    floorControlsLayout->addWidget(floorDownButton);
+    floorControlsLayout->addWidget(mFloorLabel);
+    floorControlsLayout->addWidget(floorUpButton);
+    floorLayout->addWidget(floorCaption);
+    floorLayout->addWidget(floorControls);
+    addWidget(floorField);
+
     addSeparator();
-    addWidget(mFloorLabel);
-    addAction(actions->actionUpLevel);
-    addAction(actions->actionDownLevel);
+    addAction(actions->actionFitBuilding);
+    addAction(actions->actionNormalSize);
+    for (QAction *action : { actions->actionFitBuilding, actions->actionNormalSize }) {
+        if (QToolButton *button = qobject_cast<QToolButton *>(widgetForAction(action))) {
+            button->setProperty("studioAction", true);
+            button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        }
+    }
 
     /////
     QMenu *roofMenu = new QMenu(this);
@@ -244,6 +310,37 @@ ObjectEditModeToolBar::ObjectEditModeToolBar(ObjectEditMode *mode, QWidget *pare
     button->setPopupMode(QToolButton::MenuButtonPopup);
     /////
 
+    QMenu *moreMenu = new QMenu(this);
+    moreMenu->addAction(actions->actionSelectRooms);
+    moreMenu->addAction(actions->actionSelectObject);
+    moreMenu->addAction(actions->actionRooms);
+    moreMenu->addSeparator();
+    QMenu *advancedRoofMenu = moreMenu->addMenu(tr("Advanced Roofs"));
+    const QList<QAction *> roofActions = {
+        actions->actionRoofShallow, actions->actionRoof30Degree,
+        actions->actionRoofCorner, actions->actionRoofCorner30Degree
+    };
+    for (QAction *action : roofActions) {
+        QToolButton *roofButton = qobject_cast<QToolButton *>(widgetForAction(action));
+        if (roofButton && roofButton->menu()) {
+            roofButton->menu()->setTitle(action->text());
+            advancedRoofMenu->addMenu(roofButton->menu());
+        }
+    }
+    moreMenu->addSeparator();
+    moreMenu->addAction(actions->actionBasementAccessTool);
+
+    QToolButton *moreButton = new QToolButton(this);
+    moreButton->setObjectName(QLatin1String("StudioMoreButton"));
+    moreButton->setProperty("studioTool", true);
+    moreButton->setText(tr("More"));
+    moreButton->setIcon(QIcon(QLatin1String(":/BuildingEditor/studio/more.svg")));
+    moreButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    moreButton->setPopupMode(QToolButton::InstantPopup);
+    moreButton->setMenu(moreMenu);
+    addSeparator();
+    addWidget(moreButton);
+
     connect(docman(), &BuildingDocumentMgr::currentDocumentChanged,
             this, &ObjectEditModeToolBar::currentDocumentChanged);
 }
@@ -327,7 +424,7 @@ void ObjectEditModeToolBar::updateRoomComboBox()
     }
     mRoomComboBox->blockSignals(false);
 
-    mRoomComboBox->setMinimumWidth(minWidth);
+    mRoomComboBox->setMinimumWidth(qBound(170, minWidth, 240));
 }
 
 void ObjectEditModeToolBar::roomIndexChanged(int index)
@@ -489,7 +586,7 @@ void ObjectEditModeToolBar::updateActions()
     mRoomComboBox->setEnabled(hasDoc && currentRoom() != 0);
 
     if (mCurrentDocument)
-        mFloorLabel->setText(tr("Floor %1/%2")
+        mFloorLabel->setText(tr("Floor %1 of %2")
                              .arg(mCurrentDocument->currentLevel() + 1)
                              .arg(mCurrentDocument->building()->floorCount()));
     else
@@ -692,11 +789,7 @@ ObjectEditMode::ObjectEditMode(QObject *parent) :
     w->setObjectName(QLatin1String("ObjectEditMode.VBoxWidget"));
     w->setLayout(vbox);
 
-    QToolBar *commonToolBar = BuildingEditorWindow::instance()->createCommonToolBar();
-    commonToolBar->setObjectName(QLatin1String("ObjectEditMode.CommonToolBar"));
-
     mMainWindow->setCentralWidget(w);
-    mMainWindow->addToolBar(Qt::LeftToolBarArea, commonToolBar);
     mMainWindow->addToolBar(mToolBar);
     mMainWindow->registerDockWidget(mCategoryDock);
     mMainWindow->addDockWidget(Qt::RightDockWidgetArea, mCategoryDock);
@@ -827,8 +920,8 @@ void ObjectEditMode::updateActions()
 OrthoObjectEditMode::OrthoObjectEditMode(QObject *parent) :
     ObjectEditMode(parent)
 {
-    setDisplayName(tr("Ortho"));
-    setIcon(QIcon(QLatin1String(":/BuildingEditor/icons/mode_ortho.png")));
+    setDisplayName(tr("Blueprint"));
+    setIcon(QIcon(QLatin1String(":/BuildingEditor/studio/blueprint.svg")));
     mSettingsPrefix = QLatin1String("Ortho");
 }
 
@@ -842,8 +935,8 @@ ObjectEditModePerDocumentStuff *OrthoObjectEditMode::createPerDocumentStuff(Buil
 IsoObjectEditMode::IsoObjectEditMode(QObject *parent) :
     ObjectEditMode(parent)
 {
-    setDisplayName(tr("Iso"));
-    setIcon(QIcon(QLatin1String(":/BuildingEditor/icons/mode_iso.png")));
+    setDisplayName(tr("Isometric"));
+    setIcon(QIcon(QLatin1String(":/BuildingEditor/studio/isometric.svg")));
     mSettingsPrefix = QLatin1String("Iso");
 }
 
@@ -859,4 +952,3 @@ ObjectEditModePerDocumentStuff *IsoObjectEditMode::createPerDocumentStuff(Buildi
 {
     return new IsoObjectEditModePerDocumentStuff(this, doc);
 }
-

@@ -111,8 +111,8 @@ AttributeEditMode::AttributeEditMode(QObject *parent) :
     mCurrentDocument(nullptr),
     mCurrentDocumentStuff(nullptr)
 {
-    setDisplayName(tr("Properties"));
-    setIcon(QIcon(QLatin1String(":/BuildingEditor/icons/mode_attributes.png")));
+    setDisplayName(tr("Attributes"));
+    setIcon(QIcon(QLatin1String(":/BuildingEditor/studio/attributes.svg")));
 
     mMainWindow = new EmbeddedMainWindow;
     mMainWindow->setObjectName(QString::fromUtf8("AttributeEditMode.Widget"));
@@ -133,11 +133,7 @@ AttributeEditMode::AttributeEditMode(QObject *parent) :
     w->setObjectName(QString::fromUtf8("AttributeEditMode.VBoxWidget"));
     w->setLayout(vbox);
 
-    QToolBar *commonToolBar = BuildingEditorWindow::instance()->createCommonToolBar();
-    commonToolBar->setObjectName(QLatin1String("AttributeEditMode.CommonToolBar"));
-
     mMainWindow->setCentralWidget(w);
-    mMainWindow->addToolBar(Qt::LeftToolBarArea, commonToolBar);
     mMainWindow->addToolBar(mToolBar);
     mMainWindow->registerDockWidget(mAttributesDock),
     mMainWindow->registerDockWidget(mLayersDock);

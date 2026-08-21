@@ -1,5 +1,20 @@
 <RCC>
     <qresource prefix="/BuildingEditor">
+        <file>studio-workspace.qss</file>
+        <file>studio/blueprint.svg</file>
+        <file>studio/isometric.svg</file>
+        <file>studio/tiles.svg</file>
+        <file>studio/attributes.svg</file>
+        <file>studio/room.svg</file>
+        <file>studio/wall.svg</file>
+        <file>studio/door.svg</file>
+        <file>studio/window.svg</file>
+        <file>studio/stairs.svg</file>
+        <file>studio/roof.svg</file>
+        <file>studio/furniture.svg</file>
+        <file>studio/fit.svg</file>
+        <file>studio/zoom.svg</file>
+        <file>studio/more.svg</file>
         <file>icons/icon_door.png</file>
         <file>icons/icon_floordn.png</file>
         <file>icons/icon_floorup.png</file>

@@ -27,7 +27,6 @@
 #include "buildingfurnituredock.h"
 #include "buildingisoview.h"
 #include "buildinglayersdock.h"
-#include "buildingmap.h"
 #include "buildingtemplates.h"
 #include "buildingtilesetdock.h"
 #include "buildingtiletools.h"
@@ -35,7 +34,6 @@
 #include "embeddedmainwindow.h"
 
 #include "zoomable.h"
-#include "tileselectionscope.h"
 
 #include <QAction>
 #include <QComboBox>
@@ -56,9 +54,7 @@ using namespace BuildingEditor;
 
 TileEditModeToolBar::TileEditModeToolBar(QWidget *parent) :
     QToolBar(parent),
-    mCurrentDocument(0),
-    mSelectionScope(new Tiled::Internal::TileSelectionScope(
-                        tr("Floor"), this))
+    mCurrentDocument(0)
 {
     setObjectName(QString::fromUtf8("TileEditModeToolBar"));
     setWindowTitle(tr("Tile ToolBar"));
@@ -75,15 +71,6 @@ TileEditModeToolBar::TileEditModeToolBar(QWidget *parent) :
     addAction(BuildingEditorWindow::instance()->actionIface()->actionSelectTiles);
     addAction(BuildingEditorWindow::instance()->actionIface()->actionPickTiles);
     addAction(BuildingEditorWindow::instance()->actionIface()->actionFloorGrime);
-    addSeparator();
-    addWidget(mSelectionScope->createToolButton(this, [this]() {
-        QStringList names;
-        if (!mCurrentDocument)
-            return names;
-        for (BuildingFloor *floor : mCurrentDocument->building()->floors())
-            names.append(BuildingMap::layerNames(floor->level()));
-        return names;
-    }));
     addSeparator();
     addWidget(mFloorLabel);
     addAction(BuildingEditorWindow::instance()->actionIface()->actionUpLevel);
@@ -121,7 +108,6 @@ void TileEditModeToolBar::updateActions()
     else
         mFloorLabel->setText(QString());
     mFloorLabel->setEnabled(mCurrentDocument != 0);
-    BuildingEditorWindow::instance()->setTileSelectionScope(mSelectionScope);
 }
 
 /////
@@ -258,8 +244,8 @@ TileEditMode::TileEditMode(QObject *parent) :
     mCurrentDocument(0),
     mCurrentDocumentStuff(0)
 {
-    setDisplayName(tr("Tile"));
-    setIcon(QIcon(QLatin1String(":/BuildingEditor/icons/mode_tile.png")));
+    setDisplayName(tr("Tiles"));
+    setIcon(QIcon(QLatin1String(":/BuildingEditor/studio/tiles.svg")));
 
     mMainWindow = new EmbeddedMainWindow;
     mMainWindow->setObjectName(QString::fromUtf8("TileEditMode.Widget"));
@@ -281,11 +267,7 @@ TileEditMode::TileEditMode(QObject *parent) :
     w->setObjectName(QString::fromUtf8("TileEditMode.VBoxWidget"));
     w->setLayout(vbox);
 
-    QToolBar *commonToolBar = BuildingEditorWindow::instance()->createCommonToolBar();
-    commonToolBar->setObjectName(QLatin1String("TileEditMode.CommonToolBar"));
-
     mMainWindow->setCentralWidget(w);
-    mMainWindow->addToolBar(Qt::LeftToolBarArea, commonToolBar);
     mMainWindow->addToolBar(mToolBar);
     mMainWindow->registerDockWidget(mLayersDock);
     mMainWindow->registerDockWidget(mTilesetDock);
@@ -344,7 +326,10 @@ void TileEditMode::onActiveStateChanged(bool active)
     menu->clear();
 
     if (active) {
+        // BuildingEd may activate this mode before Tilesets.txt has finished
+        // loading. Refreshing here is cheap and makes reactivation self-healing.
         mTilesetDock->firstTimeSetup();
+
         if (mCurrentDocumentStuff)
             mCurrentDocumentStuff->activate();
 
@@ -373,8 +358,11 @@ void TileEditMode::onActiveStateChanged(bool active)
 
 void TileEditMode::documentAdded(BuildingDocument *doc)
 {
+    // The mode can be activated before BuildingFurniture.txt has finished
+    // loading. A new document is another safe refresh point.
     mFurnitureDock->switchTo();
     mTilesetDock->firstTimeSetup();
+
     mDocumentStuff[doc] = new TileEditModePerDocumentStuff(this, doc);
 
     int docIndex = BuildingDocumentMgr::instance()->indexOf(doc);
@@ -426,4 +414,3 @@ void TileEditMode::documentTabCloseRequested(int index)
 void TileEditMode::updateActions()
 {
 }
-

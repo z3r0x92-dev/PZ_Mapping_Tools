@@ -28,8 +28,6 @@ class QMainWindow;
 class QTabWidget;
 class QToolButton;
 
-namespace Tiled { namespace Internal { class TileSelectionScope; } }
-
 namespace BuildingEditor {
 
 class BuildingDocument;
@@ -58,7 +56,6 @@ private slots:
 public:
     BuildingDocument *mCurrentDocument;
     QToolButton *mFloorLabel;
-    Tiled::Internal::TileSelectionScope *mSelectionScope;
 };
 
 class TileEditMode : public IMode

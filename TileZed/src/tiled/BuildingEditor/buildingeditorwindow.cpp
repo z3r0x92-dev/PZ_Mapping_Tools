@@ -83,8 +83,10 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
+#include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QIcon>
 #include <QGraphicsView>
 #include <QHash>
 #include <QLabel>
@@ -440,9 +442,35 @@ BuildingEditorWindow::BuildingEditorWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    QFile studioStyle(QLatin1String(":/BuildingEditor/studio-workspace.qss"));
+    if (studioStyle.open(QIODevice::ReadOnly | QIODevice::Text))
+        setStyleSheet(QString::fromUtf8(studioStyle.readAll()));
+
+    setDockOptions(QMainWindow::AnimatedDocks
+                   | QMainWindow::AllowNestedDocks
+                   | QMainWindow::AllowTabbedDocks);
+
     mInstance = this;
 
     BuildingPreferences *prefs = BuildingPreferences::instance();
+
+    struct StudioActionIcon {
+        QAction *action;
+        const char *resource;
+    };
+    const StudioActionIcon studioIcons[] = {
+        { ui->actionPencil, ":/BuildingEditor/studio/room.svg" },
+        { ui->actionWall, ":/BuildingEditor/studio/wall.svg" },
+        { ui->actionDoor, ":/BuildingEditor/studio/door.svg" },
+        { ui->actionWindow, ":/BuildingEditor/studio/window.svg" },
+        { ui->actionStairs, ":/BuildingEditor/studio/stairs.svg" },
+        { ui->actionRoof, ":/BuildingEditor/studio/roof.svg" },
+        { ui->actionFurniture, ":/BuildingEditor/studio/furniture.svg" },
+        { ui->actionNormalSize, ":/BuildingEditor/studio/zoom.svg" }
+    };
+    for (const StudioActionIcon &entry : studioIcons)
+        entry.action->setIcon(QIcon(QLatin1String(entry.resource)));
+    ui->actionNormalSize->setText(tr("100%"));
 
     connect(docman(), &BuildingDocumentMgr::documentAdded,
             this, &BuildingEditorWindow::documentAdded);

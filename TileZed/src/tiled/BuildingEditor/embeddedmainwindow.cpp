@@ -46,7 +46,10 @@ void EmbeddedMainWindow::registerDockWidget(QDockWidget *dockWidget)
     dockWidget->setProperty(KEY_DOCKWIDGET_ACTIVE_STATE, true);
 }
 
-#define STATE_VERSION 0
+// Version 1 establishes the studio-workspace toolbar and dock defaults.
+// Older states referenced the removed common toolbar and produced a narrow,
+// fragmented canvas when restored into the redesigned shell.
+#define STATE_VERSION 1
 void EmbeddedMainWindow::readSettings(QSettings &settings)
 {
     QByteArray state = settings.value(objectName() + QLatin1String(".state")).toByteArray();
