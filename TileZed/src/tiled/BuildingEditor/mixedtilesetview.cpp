@@ -110,9 +110,9 @@ void TileDelegate::paint(QPainter *painter,
         return;
     }
     if (m->showTransparentTiles() && tile->image().isNull()) {
-        tile = tile->hasResolvedSource()
-                ? TilesetManager::instance()->invisibleTile()
-                : TilesetManager::instance()->missingTile();
+        Tiled::Tileset *tileset = tile->tileset();
+        if (!tileset || tileset->isMissing() || !tileset->isLoaded())
+            tile = TilesetManager::instance()->missingTile();
     }
 
     const int extra = 2;

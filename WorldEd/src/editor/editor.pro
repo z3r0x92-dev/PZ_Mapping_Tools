@@ -18,7 +18,7 @@ win32 {
 }
 
 # MSVC
-win32 {
+msvc {
     QMAKE_CFLAGS_RELEASE += -Zi
     QMAKE_CXXFLAGS_RELEASE += -Zi
     QMAKE_LFLAGS_RELEASE += /DEBUG /OPT:REF

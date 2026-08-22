@@ -168,13 +168,10 @@ ObjectEditModeToolBar::ObjectEditModeToolBar(ObjectEditMode *mode, QWidget *pare
     addWidget(floorField);
 
     addSeparator();
-    addAction(actions->actionFitBuilding);
     addAction(actions->actionNormalSize);
-    for (QAction *action : { actions->actionFitBuilding, actions->actionNormalSize }) {
-        if (QToolButton *button = qobject_cast<QToolButton *>(widgetForAction(action))) {
-            button->setProperty("studioAction", true);
-            button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-        }
+    if (QToolButton *button = qobject_cast<QToolButton *>(widgetForAction(actions->actionNormalSize))) {
+        button->setProperty("studioAction", true);
+        button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     }
 
     /////

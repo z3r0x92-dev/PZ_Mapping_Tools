@@ -376,7 +376,7 @@ bool mergeStraightPolylines(QPolygonF *left, const QPolygonF &right)
               [axis](const QPointF &first, const QPointF &second) {
         return axis(first) < axis(second);
     });
-    *left = QPolygonF({endpoints.first(), endpoints.last()});
+    *left = QPolygonF(QVector<QPointF>{endpoints.first(), endpoints.last()});
     return true;
 }
 void stitchNavPolyline(QVector<NavPolylineRecord> *polylines,
@@ -2289,14 +2289,14 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     road.lineWidthSquares = 7.0;
     road.tags.insert(QStringLiteral("name"), QStringLiteral("Main Street"));
     road.tags.insert(QStringLiteral("highway"), QStringLiteral("primary"));
-    road.geometries += QPolygonF({QPointF(10, 20), QPointF(140, 20)});
+    road.geometries += QPolygonF(QVector<QPointF>{QPointF(10, 20), QPointF(140, 20)});
     generated.projectFeatures += road;
     OsmProjectFeature overlappingRoad = road;
     overlappingRoad.osmId = 5;
     overlappingRoad.tags.remove(QStringLiteral("name"));
     overlappingRoad.geometries.clear();
     overlappingRoad.geometries += QPolygonF(
-                {QPointF(70, 20), QPointF(180, 20)});
+                QVector<QPointF>{QPointF(70, 20), QPointF(180, 20)});
     generated.projectFeatures += overlappingRoad;
     OsmProjectFeature crossingRoad = road;
     crossingRoad.osmId = 13;
@@ -2306,7 +2306,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     crossingRoad.lineWidthSquares = 10.0;
     crossingRoad.geometries.clear();
     crossingRoad.geometries += QPolygonF(
-                {QPointF(80, 5), QPointF(80, 60)});
+                QVector<QPointF>{QPointF(80, 5), QPointF(80, 60)});
     generated.projectFeatures += crossingRoad;
     OsmProjectFeature oneWayRoad = road;
     oneWayRoad.osmId = 14;
@@ -2316,7 +2316,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     oneWayRoad.tags.insert(QStringLiteral("oneway"), QStringLiteral("yes"));
     oneWayRoad.geometries.clear();
     oneWayRoad.geometries += QPolygonF(
-                {QPointF(10, 70), QPointF(120, 70)});
+                QVector<QPointF>{QPointF(10, 70), QPointF(120, 70)});
     generated.projectFeatures += oneWayRoad;
     OsmProjectFeature diagonalRoad = road;
     diagonalRoad.osmId = 15;
@@ -2325,7 +2325,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
                             QStringLiteral("tertiary"));
     diagonalRoad.geometries.clear();
     diagonalRoad.geometries += QPolygonF(
-                {QPointF(10, 75), QPointF(90, 95)});
+                QVector<QPointF>{QPointF(10, 75), QPointF(90, 95)});
     generated.projectFeatures += diagonalRoad;
     OsmProjectFeature unpavedRoad = road;
     unpavedRoad.osmId = 16;
@@ -2336,7 +2336,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
                            QStringLiteral("gravel"));
     unpavedRoad.geometries.clear();
     unpavedRoad.geometries += QPolygonF(
-                {QPointF(10, 105), QPointF(120, 105)});
+                QVector<QPointF>{QPointF(10, 105), QPointF(120, 105)});
     generated.projectFeatures += unpavedRoad;
     OsmProjectFeature trail;
     trail.osmId = 4;
@@ -2344,7 +2344,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     trail.road = true;
     trail.lineWidthSquares = 3.0;
     trail.tags.insert(QStringLiteral("highway"), QStringLiteral("path"));
-    trail.geometries += QPolygonF({QPointF(10, 80), QPointF(90, 100)});
+    trail.geometries += QPolygonF(QVector<QPointF>{QPointF(10, 80), QPointF(90, 100)});
     generated.projectFeatures += trail;
     OsmProjectFeature building;
     building.osmId = 2;
@@ -2352,7 +2352,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     building.building = true;
     building.buildingLevels = 2;
     building.tags.insert(QStringLiteral("building"), QStringLiteral("yes"));
-    building.geometries += QPolygonF({QPointF(20, 30), QPointF(35, 30),
+    building.geometries += QPolygonF(QVector<QPointF>{QPointF(20, 30), QPointF(35, 30),
                                       QPointF(35, 36), QPointF(27, 36),
                                       QPointF(27, 42), QPointF(20, 42),
                                       QPointF(20, 30)});
@@ -2362,7 +2362,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     forest.osmType = QStringLiteral("way");
     forest.forestArea = true;
     forest.foragingZone = QStringLiteral("DeepForest");
-    forest.geometries += QPolygonF({QPointF(100, 100), QPointF(140, 100),
+    forest.geometries += QPolygonF(QVector<QPointF>{QPointF(100, 100), QPointF(140, 100),
                                     QPointF(140, 140), QPointF(100, 140),
                                     QPointF(100, 100)});
     generated.projectFeatures += forest;
@@ -2371,7 +2371,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     scrub.osmType = QStringLiteral("way");
     scrub.foragingZone = QStringLiteral("Forest");
     scrub.tags.insert(QStringLiteral("natural"), QStringLiteral("scrub"));
-    scrub.geometries += QPolygonF({QPointF(125, 120), QPointF(175, 120),
+    scrub.geometries += QPolygonF(QVector<QPointF>{QPointF(125, 120), QPointF(175, 120),
                                    QPointF(175, 150), QPointF(125, 150),
                                    QPointF(125, 120)});
     generated.projectFeatures += scrub;
@@ -2379,7 +2379,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     grass.osmId = 6;
     grass.osmType = QStringLiteral("way");
     grass.foragingZone = QStringLiteral("Vegitation");
-    grass.geometries += QPolygonF({QPointF(150, 100), QPointF(190, 100),
+    grass.geometries += QPolygonF(QVector<QPointF>{QPointF(150, 100), QPointF(190, 100),
                                    QPointF(190, 140), QPointF(150, 140),
                                    QPointF(150, 100)});
     generated.projectFeatures += grass;
@@ -2388,7 +2388,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     water.osmType = QStringLiteral("way");
     water.waterArea = true;
     water.foragingZone = QStringLiteral("Water");
-    water.geometries += QPolygonF({QPointF(150, 150), QPointF(200, 150),
+    water.geometries += QPolygonF(QVector<QPointF>{QPointF(150, 150), QPointF(200, 150),
                                    QPointF(200, 200), QPointF(150, 200),
                                    QPointF(150, 150)});
     generated.projectFeatures += water;
@@ -2398,7 +2398,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     stream.waterway = true;
     stream.lineWidthSquares = 2.0;
     stream.tags.insert(QStringLiteral("waterway"), QStringLiteral("stream"));
-    stream.geometries += QPolygonF({QPointF(10, 180), QPointF(120, 180)});
+    stream.geometries += QPolygonF(QVector<QPointF>{QPointF(10, 180), QPointF(120, 180)});
     generated.projectFeatures += stream;
     OsmProjectFeature railway;
     railway.osmId = 8;
@@ -2406,14 +2406,14 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     railway.railway = true;
     railway.lineWidthSquares = 4.0;
     railway.tags.insert(QStringLiteral("railway"), QStringLiteral("rail"));
-    railway.geometries += QPolygonF({QPointF(10, 210), QPointF(220, 210)});
+    railway.geometries += QPolygonF(QVector<QPointF>{QPointF(10, 210), QPointF(220, 210)});
     generated.projectFeatures += railway;
     OsmProjectFeature farmland;
     farmland.osmId = 9;
     farmland.osmType = QStringLiteral("way");
     farmland.foragingZone = QStringLiteral("FarmLand");
     farmland.tags.insert(QStringLiteral("landuse"), QStringLiteral("farmland"));
-    farmland.geometries += QPolygonF({QPointF(205, 25), QPointF(245, 25),
+    farmland.geometries += QPolygonF(QVector<QPointF>{QPointF(205, 25), QPointF(245, 25),
                                       QPointF(245, 65), QPointF(205, 65),
                                       QPointF(205, 25)});
     generated.projectFeatures += farmland;
@@ -2422,7 +2422,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
     farm.osmType = QStringLiteral("way");
     farm.foragingZone = QStringLiteral("Farm");
     farm.tags.insert(QStringLiteral("landuse"), QStringLiteral("orchard"));
-    farm.geometries += QPolygonF({QPointF(205, 75), QPointF(245, 75),
+    farm.geometries += QPolygonF(QVector<QPointF>{QPointF(205, 75), QPointF(245, 75),
                                   QPointF(245, 95), QPointF(205, 95),
                                   QPointF(205, 75)});
     generated.projectFeatures += farm;
@@ -2758,7 +2758,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
             denseBuilding.building = true;
             denseBuilding.tags.insert(QStringLiteral("building"),
                                       QStringLiteral("yes"));
-            denseBuilding.geometries += QPolygonF({
+            denseBuilding.geometries += QPolygonF(QVector<QPointF>{
                 QPointF(x, y), QPointF(x + 2, y),
                 QPointF(x + 2, y + 2), QPointF(x, y + 2),
                 QPointF(x, y)
@@ -2821,7 +2821,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
         crossCellBuilding.building = true;
         crossCellBuilding.tags.insert(QStringLiteral("building"),
                                       QStringLiteral("industrial"));
-        crossCellBuilding.geometries += QPolygonF({
+        crossCellBuilding.geometries += QPolygonF(QVector<QPointF>{
             QPointF(240, 40), QPointF(320, 40),
             QPointF(320, 70), QPointF(240, 70),
             QPointF(240, 40)
@@ -2834,7 +2834,7 @@ bool OsmProjectData::validate(QString *summary, QString *error)
         crossCellRoad.lineWidthSquares = 7.0;
         crossCellRoad.tags.insert(QStringLiteral("highway"),
                                   QStringLiteral("primary"));
-        crossCellRoad.geometries += QPolygonF({
+        crossCellRoad.geometries += QPolygonF(QVector<QPointF>{
             QPointF(220, 120), QPointF(300, 120)
         });
         crossCellGenerated.projectFeatures += crossCellRoad;
