@@ -8,6 +8,16 @@ published on 2026-08-19 at 01:12 UTC as **Build 20260818b**.
 
 This changelog contains only user-visible work added after that tagged release.
 
+## PZTools Modernized v1.0.4
+
+- Updated TileZed, BuildingEd, and PZWorldEd for upstream Build 42.20B260820b.
+- Fixed Qt 5.14.2 and MinGW build compatibility issues.
+- Fixed BuildingEd transparent tiles being displayed as missing-tile placeholders.
+- Restored transparent tile handling in the tile, furniture, and mixed tileset browsers.
+- Preserved the modernized Breeze Dark interface and shared portable settings.
+- Updated the compiled Windows executables and matching tiled/worlded libraries.
+
+
 ## Shared / All applications
 
 - Malformed TMX and TBX references, dimensions, colors, coordinates, and
